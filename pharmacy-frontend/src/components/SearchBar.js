@@ -7,7 +7,7 @@ const SearchBar = ({ onSearch }) => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/products/?search=${query}`);
+      const response = await axios.get(`https://pharmacy-website-0pm4.onrender.com/api/products/?search=${query}`);
       onSearch(response.data);
     } catch (error) {
       console.error('Error fetching search results:', error);
