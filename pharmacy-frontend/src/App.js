@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, Link } from 'react-router-dom';
 import ProductsList from './components/ProductsList';
 import CartPage from './components/CartPage';
-import PaymentPage from './pages/PaymentPage';
+
 import LoginPage from './pages/LoginPage';
 import OrderHistory from './pages/OrderHistory';  
 import { CartProvider } from './context/CartContext';
