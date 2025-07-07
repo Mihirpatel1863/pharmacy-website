@@ -2,4 +2,4 @@ Django>=4.2
 gunicorn
 pillow
 djangorestframework
-django-cors-headers  ← add this if missing
+django-cors-headers
