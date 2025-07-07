@@ -83,7 +83,7 @@ function AppContent() {
   <Route path="/login" element={!user ? <LoginPage onLogin={handleLogin} /> : <Navigate to="/" />} />
   <Route path="/" element={<ProductsList />} />
   <Route path="/cart" element={<CartPage />} />
-  <Route path="/payment" element={<PaymentPage />} />
+
   <Route path="/order-history" element={user ? <OrderHistory user={user} /> : <Navigate to="/login" />} />
   <Route path="/about" element={<AboutUs />} /> 
   <Route path="/contact" element={<ContactUs />} />  
