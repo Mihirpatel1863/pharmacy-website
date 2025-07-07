@@ -20,7 +20,7 @@ const CartPage = () => {
 
         
         try {
-            await axios.patch(`http://127.0.0.1:8000/api/products/${itemToRemove.id}/`, {
+            await axios.patch(`https://pharmacy-website-0pm4.onrender.com/api/products/${itemToRemove.id}/`, {
                 stock: itemToRemove.stock + 1
             });
 
