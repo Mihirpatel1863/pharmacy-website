@@ -13,7 +13,7 @@ const ProductsList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/products/', {
+        const response = await axios.get('https://pharmacy-website-0pm4.onrender.com/api/products/', {
           params: { search: searchQuery } 
         });
         setProducts(response.data);
