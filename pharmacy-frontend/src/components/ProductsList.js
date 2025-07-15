@@ -7,14 +7,17 @@ const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(20); 
+  const [productsPerPage] = useState(20);
   const { dispatch } = useCart();
+
+  // ✅ Environment variable for API URL
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('https://pharmacy-website-0pm4.onrender.com/api/products/', {
-          params: { search: searchQuery } 
+        const response = await axios.get(`${API_BASE_URL}/api/products/`, {
+          params: { search: searchQuery }
         });
         setProducts(response.data);
       } catch (error) {
@@ -25,16 +28,16 @@ const ProductsList = () => {
     fetchProducts();
   }, [searchQuery]);
 
-  // Calculate current products
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const handleAddToCart = async (product) => {
     try {
-      await axios.patch(`https://pharmacy-website-0pm4.onrender.com/api/products/${product.id}/`, {
+      await axios.patch(`${API_BASE_URL}/api/products/${product.id}/`, {
         stock: product.stock - 1
       });
+
       const updatedProduct = { ...product, stock: product.stock - 1 };
       setProducts(products.map(p => p.id === product.id ? updatedProduct : p));
       dispatch({ type: 'ADD_TO_CART', payload: updatedProduct });
@@ -43,7 +46,6 @@ const ProductsList = () => {
     }
   };
 
-  
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(products.length / productsPerPage); i++) {
     pageNumbers.push(i);
@@ -65,6 +67,7 @@ const ProductsList = () => {
           <path d="M10.5 0C4.694 0 0 4.694 0 10.5S4.694 21 10.5 21c2.374 0 4.554-.818 6.274-2.174l4.092 4.092 1.5-1.5-4.092-4.092A10.452 10.452 0 0021 10.5C21 4.694 16.306 0 10.5 0zM10.5 19C5.81 19 2 15.19 2 10.5S5.81 2 10.5 2 19 5.81 19 10.5 15.19 19 10.5 19z" />
         </svg>
       </div>
+
       {currentProducts.length > 0 ? (
         <div className="product-grid">
           {currentProducts.map(product => (
@@ -75,7 +78,9 @@ const ProductsList = () => {
                 <p>{product.description}</p>
                 <p><strong>Stock:</strong> {product.stock}</p>
                 <p><strong>Price:</strong> ${product.price}</p>
-                <button onClick={() => handleAddToCart(product)} className="add-to-cart-button">Add to Cart</button>
+                <button onClick={() => handleAddToCart(product)} className="add-to-cart-button">
+                  Add to Cart
+                </button>
               </div>
             </div>
           ))}
