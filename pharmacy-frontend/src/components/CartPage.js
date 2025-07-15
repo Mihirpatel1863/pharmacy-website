@@ -10,7 +10,9 @@ const CartPage = () => {
     const { user } = useUser(); 
     const navigate = useNavigate();
 
-    
+    // ✅ Use environment variable for backend URL
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
     const calculateSubtotal = () => {
         return cart.reduce((total, item) => total + (Number(item.price) * item.quantity), 0).toFixed(2);
     };
@@ -18,13 +20,11 @@ const CartPage = () => {
     const handleRemoveFromCart = async (id) => {
         const itemToRemove = cart.find(item => item.id === id);
 
-        
         try {
-            await axios.patch(`https://pharmacy-website-0pm4.onrender.com/api/products/${itemToRemove.id}/`, {
+            await axios.patch(`${API_BASE_URL}/api/products/${itemToRemove.id}/`, {
                 stock: itemToRemove.stock + 1
             });
 
-           
             dispatch({ type: 'REMOVE_FROM_CART', payload: id });
         } catch (error) {
             console.error('Error updating stock:', error);
@@ -43,7 +43,6 @@ const CartPage = () => {
             date: new Date().toLocaleDateString(),
         };
     
-        
         const orderHistoryKey = `orderHistory_${user.username}`;
         const orderHistory = JSON.parse(localStorage.getItem(orderHistoryKey)) || [];
         orderHistory.push(orderDetails);
@@ -51,14 +50,11 @@ const CartPage = () => {
     
         console.log(`Order saved for ${user.username}:`, orderDetails); 
     
-        
         localStorage.removeItem('cart');
     
-        
         navigate('/payment');
     };
     
-
     return (
         <div className="cart-page">
             <h2>Your Cart</h2>
