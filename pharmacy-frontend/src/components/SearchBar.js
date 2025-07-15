@@ -1,13 +1,15 @@
-
 import React, { useState } from 'react';
 import axios from 'axios';
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
 
+  // ✅ Use environment variable for backend URL
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`https://pharmacy-website-0pm4.onrender.com/api/products/?search=${query}`);
+      const response = await axios.get(`${API_BASE_URL}/api/products/?search=${query}`);
       onSearch(response.data);
     } catch (error) {
       console.error('Error fetching search results:', error);
