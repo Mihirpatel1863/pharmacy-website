@@ -32,7 +32,7 @@ const ProductsList = () => {
 
   const handleAddToCart = async (product) => {
     try {
-      await axios.patch(`http://127.0.0.1:8000/api/products/${product.id}/`, {
+      await axios.patch(`https://pharmacy-website-0pm4.onrender.com/api/products/${product.id}/`, {
         stock: product.stock - 1
       });
       const updatedProduct = { ...product, stock: product.stock - 1 };
