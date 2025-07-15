@@ -10,7 +10,6 @@ const ProductsList = () => {
   const [productsPerPage] = useState(20);
   const { dispatch } = useCart();
 
-  // ✅ Environment variable for API URL
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -19,9 +18,17 @@ const ProductsList = () => {
         const response = await axios.get(`${API_BASE_URL}/api/products/`, {
           params: { search: searchQuery }
         });
-        setProducts(response.data);
+
+        // ✅ Safely check if response is an array
+        if (Array.isArray(response.data)) {
+          setProducts(response.data);
+        } else {
+          console.error('Expected array of products, got:', response.data);
+          setProducts([]); // fallback to empty list to prevent map error
+        }
       } catch (error) {
         console.error("Error fetching products:", error);
+        setProducts([]); // also fallback on error
       }
     };
 
