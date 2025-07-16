@@ -10,7 +10,9 @@ const ProductsList = () => {
   const [productsPerPage] = useState(20);
   const { dispatch } = useCart();
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+  // ✅ Safe API URL fallback if env is missing
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://pharmacy-website-0pm4.onrender.com';
+  console.log("🔗 API_BASE_URL:", API_BASE_URL);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -19,16 +21,16 @@ const ProductsList = () => {
           params: { search: searchQuery }
         });
 
-        // ✅ Safely check if response is an array
+        // ✅ Defensive check
         if (Array.isArray(response.data)) {
           setProducts(response.data);
         } else {
           console.error('Expected array of products, got:', response.data);
-          setProducts([]); // fallback to empty list to prevent map error
+          setProducts([]); 
         }
       } catch (error) {
-        console.error("Error fetching products:", error);
-        setProducts([]); // also fallback on error
+        console.error("❌ Error fetching products:", error);
+        setProducts([]); 
       }
     };
 
@@ -49,16 +51,16 @@ const ProductsList = () => {
       setProducts(products.map(p => p.id === product.id ? updatedProduct : p));
       dispatch({ type: 'ADD_TO_CART', payload: updatedProduct });
     } catch (error) {
-      console.error('Error updating stock:', error);
+      console.error('❌ Error updating stock:', error);
     }
   };
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(products.length / productsPerPage); i++) {
     pageNumbers.push(i);
   }
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="products-list">
